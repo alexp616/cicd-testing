@@ -1,12 +1,18 @@
-name: CI/CD # name of the test
+name: CI/CD
 
-on: [push] # the Github Action will activate "on" the event that you "push" to the repo
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs: # the things being executed
-  tests: # the name of your status check, will become important when you do branch protection
-    runs-on: ubuntu-latest # which device on Github's server that you are running the Actions on
+  tests:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # using version 4 of Actions
+      - uses: actions/checkout@v4
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -14,7 +20,7 @@ jobs: # the things being executed
       - name: Install Dependencies
         run: npm install
       - name: Unit Test
-        run: npm test # the actual testing line
+        run: npm test
 
   lint: 
     runs-on: ubuntu-latest
@@ -35,3 +41,15 @@ jobs: # the things being executed
       - name: HTML Lint
         run: npm run htmllint
         continue-on-error: true
+
+  build:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./ # The folder the action should deploy.
