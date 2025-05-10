@@ -8,7 +8,9 @@ on:
   pull_request:
     branches:
       - main
-  
+
+permissions:
+  contents: write
 
 jobs: # the things being executed
   tests:
@@ -36,17 +38,15 @@ jobs: # the things being executed
         run: npm install
       - name: JS Lint
         run: npm run jslint
-        continue-on-error: true
       - name: CSS Lint
         run: npm run csslint
-        continue-on-error: true
       - name: HTML Lint
         run: npm run htmllint
-        continue-on-error: true
 
   build:
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
