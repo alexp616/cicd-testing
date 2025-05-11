@@ -2,15 +2,9 @@ name: CI/CD
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
-
-permissions:
-  contents: write
 
 jobs: # the things being executed
   tests:
