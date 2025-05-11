@@ -36,16 +36,3 @@ jobs: # the things being executed
         run: npm run csslint
       - name: HTML Lint
         run: npm run htmllint
-
-  build:
-    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: ./ # The folder the action should deploy.
